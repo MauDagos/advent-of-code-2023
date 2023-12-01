@@ -108,21 +108,33 @@ mod tests {
 
     #[test]
     fn test_example_1() {
-        assert_eq!(sum_calibration_values("./data/example1.txt", DAY_1_DIGITS), 142);
+        assert_eq!(
+            sum_calibration_values("./data/example1.txt", DAY_1_DIGITS),
+            142
+        );
     }
 
     #[test]
     fn test_example_2() {
-        assert_eq!(sum_calibration_values("./data/example2.txt", DAY_2_DIGITS), 281);
+        assert_eq!(
+            sum_calibration_values("./data/example2.txt", DAY_2_DIGITS),
+            281
+        );
     }
 
     #[test]
     fn test_day_1() {
-        assert_eq!(sum_calibration_values("./data/input.txt", DAY_1_DIGITS), 55130);
+        assert_eq!(
+            sum_calibration_values("./data/input.txt", DAY_1_DIGITS),
+            55130
+        );
     }
 
     #[test]
     fn test_day_2() {
-        assert_eq!(sum_calibration_values("./data/input.txt", DAY_2_DIGITS), 54985);
+        assert_eq!(
+            sum_calibration_values("./data/input.txt", DAY_2_DIGITS),
+            54985
+        );
     }
 }
