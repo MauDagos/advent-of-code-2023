@@ -43,7 +43,6 @@ where
 fn check_game(line: String, elf_bag: &HashMap<String, u32>) -> Result<(bool, u32), ParseIntError> {
     let mut is_possible = true;
     let mut minimum_game_bag = HashMap::new();
-    let mut power = 1;
     if let Some(colon_pos) = line.find(':') {
         let offset = ": ".len();
         let sets_unparsed = &line[(colon_pos + offset)..];
@@ -63,9 +62,7 @@ fn check_game(line: String, elf_bag: &HashMap<String, u32>) -> Result<(bool, u32
             }
         }
     }
-    for minimum_amount in minimum_game_bag.values() {
-        power *= minimum_amount;
-    }
+    let power = minimum_game_bag.values().product();
     Ok((is_possible, power))
 }
 
