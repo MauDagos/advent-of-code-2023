@@ -27,15 +27,13 @@ where
     let mut sum_of_possible_game_ids = 0;
     let mut game_id = 0;
     let mut sum_of_powers = 0;
-    for line in BufReader::new(File::open(filename)?).lines() {
-        if let Ok(line) = line {
-            game_id += 1;
-            let (is_possible, power) = check_game(line, &elf_bag)?;
-            if is_possible {
-                sum_of_possible_game_ids += game_id;
-            }
-            sum_of_powers += power;
+    for line in BufReader::new(File::open(filename)?).lines().flatten() {
+        game_id += 1;
+        let (is_possible, power) = check_game(line, &elf_bag)?;
+        if is_possible {
+            sum_of_possible_game_ids += game_id;
         }
+        sum_of_powers += power;
     }
     Ok((sum_of_possible_game_ids, sum_of_powers))
 }

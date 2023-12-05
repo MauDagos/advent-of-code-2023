@@ -27,7 +27,7 @@ impl PartNumber {
     fn from_row(row: &Vec<char>, row_pos: usize, start: usize) -> Self {
         // Go until the end or until the first-found non-digit looking forwards
         let mut end = row.len();
-        if let Some(right_dot_pos) = &row[start..].iter().position(|c| !c.is_digit(10)) {
+        if let Some(right_dot_pos) = &row[start..].iter().position(|c| !c.is_ascii_digit()) {
             end = start + right_dot_pos;
         }
         // Parse the part number
@@ -67,7 +67,7 @@ impl Engine {
             let mut j = 0;
             while j < row.len() {
                 let c = row[j];
-                if c.is_digit(10) {
+                if c.is_ascii_digit() {
                     let part_number = PartNumber::from_row(&row, i, j);
                     j = part_number.range.end;
                     part_numbers.push(part_number);

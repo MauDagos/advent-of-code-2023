@@ -3,8 +3,8 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
 
-const DAY_1_DIGITS: &'static [&str] = &["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const DAY_2_DIGITS: &'static [&str] = &[
+const DAY_1_DIGITS: &[&str] = &["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const DAY_2_DIGITS: &[&str] = &[
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "one", "two", "three", "four", "five", "six",
     "seven", "eight", "nine",
 ];
@@ -26,11 +26,9 @@ where
     P: AsRef<Path>,
 {
     let mut sum = 0;
-    for line in BufReader::new(File::open(filename)?).lines() {
-        if let Ok(line) = line {
-            if let Some(value) = calibration_value(line, digits) {
-                sum += value;
-            }
+    for line in BufReader::new(File::open(filename)?).lines().flatten() {
+        if let Some(value) = calibration_value(line, digits) {
+            sum += value;
         }
     }
     Ok(sum)
@@ -42,37 +40,33 @@ fn calibration_value(line: String, digits: &[&str]) -> Option<u32> {
     let mut first_digit_position = None;
     for digit in digits {
         if let Some(pos) = line.find(digit) {
-            if first_digit_position == None || pos < first_digit_position? {
+            if first_digit_position.is_none() || pos < first_digit_position? {
                 first_digit_position = Some(pos);
                 first_digit = Some(digit);
             }
         }
     }
     // Return if none was found
-    if first_digit == None {
-        return None;
-    }
+    first_digit?;
     // Get the last digit from `line`
     let mut last_digit = first_digit;
     let mut last_digit_position = None;
     for digit in digits {
         if let Some(pos) = line.rfind(digit) {
-            if last_digit_position == None || pos > last_digit_position? {
+            if last_digit_position.is_none() || pos > last_digit_position? {
                 last_digit_position = Some(pos);
                 last_digit = Some(digit);
             }
         }
     }
     // Construct the final value
-    Some(
-        format!(
-            "{}{}",
-            translate_digit(first_digit?),
-            translate_digit(last_digit?)
-        )
-        .parse::<u32>()
-        .ok()?,
+    format!(
+        "{}{}",
+        translate_digit(first_digit?),
+        translate_digit(last_digit?)
     )
+    .parse::<u32>()
+    .ok()
 }
 
 fn translate_digit(digit: &str) -> &str {

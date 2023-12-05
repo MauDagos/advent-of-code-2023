@@ -83,10 +83,10 @@ impl CardPile {
             let copies = entry.copies;
             let wins = entry.card.wins();
             if wins > 0 {
-                for j in (i + 1)..(i + 1 + wins as usize).min(size) {
-                    let entry_won = &mut pile[j];
-                    entry_won.incr_copies(copies)
-                }
+                pile.iter_mut()
+                    .take((i + 1 + wins).min(size))
+                    .skip(i + 1)
+                    .for_each(|e| e.incr_copies(copies));
             }
         }
         // Return the sum of copies
